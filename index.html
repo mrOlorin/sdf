@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Signed Distance Field</title>
+    <script src="./vendor/dat.gui.js"></script>
+    <script src="./vendor/ace/src-min/ace.js" type="module"></script>
+    <link rel="stylesheet" href="./css/datgui.css">
+    <link rel="stylesheet" href="./css/style.css">
+
+    <script type="module" async>
+        import Space from "./js/Space.js";
+        import Loader from "./js/Loader.js";
+
+        const params = new URLSearchParams(window.location.search);
+        const sceneName = params.get("s") || params.get("scene") || 'sonic';
+        const capture = params.has("c") || params.has("capture");
+
+        const space = new Space(document.getElementById('container'));
+        document.getElementById('scene-gui').appendChild(space.gui.domElement);
+
+        const setFavicon = () => {
+            const favicon = document.createElement('link');
+            favicon.type = 'image/x-icon';
+            favicon.rel = 'shortcut icon';
+            favicon.href = space.canvas.toDataURL('image/x-icon', .1);
+            document.getElementsByTagName('head')[0].appendChild(favicon);
+        };
+        (async() => {
+            const loaderOptions = {
+                space,
+                editorContainers: {
+                    position: document.getElementById("position"),
+                    sdf: document.getElementById("sdf"),
+                    material: document.getElementById("material"),
+                }
+            };
+            const loader = new Loader(loaderOptions);
+            console.time("Объект добавлен на сцену");
+            await loader.createPoints(sceneName);
+            console.timeEnd("Объект добавлен на сцену");
+            if (capture) {
+                space.capture();
+            }
+            space.run();
+            setFavicon();
+        })();
+        document.body.style.display = "block";
+    </script>
+</head>
+<body>
+<div id="container"></div>
+<div id="scene-gui"></div>
+<div class="editor-container">
+    <div id="editor-position">
+        <div id="position" class="editor"></div>
+    </div>
+    <div id="editor-sdf">
+        <div id="sdf" class="editor"></div>
+    </div>
+    <div id="editor-material">
+        <div id="material" class="editor"></div>
+    </div>
+</div>
+</body>
+</html>

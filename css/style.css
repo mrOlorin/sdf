@@ -1,0 +1,38 @@
+body {
+    display: none;
+}
+
+#container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#scene-gui {
+    padding: 0 0 20px 0;
+    display: table;
+    width: auto;
+}
+
+.editor-container {
+    position: absolute;
+    left: 0;
+    padding-left: 10px;
+    width: 98%;
+    z-index: -1;
+}
+
+.editor {
+    position: relative;
+    width: 100%;
+    padding-right: -50px;
+    margin-top: 20px;
+}
+
+#video-placeholder {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
